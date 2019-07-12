@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetalleUsuario"
+    android:id="@+id/linearLayout">
+
+    <TextView
+        android:id="@+id/textoNombreUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="40dp"
+        android:gravity="center|center_horizontal"
+        android:text="TextView"
+        android:textSize="20sp"
+        tools:layout_conversion_absoluteHeight="24dp"
+        tools:layout_conversion_absoluteWidth="312dp"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="50dp"
+        android:textStyle="bold"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:id="@+id/etiquetaEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/informacionEmail"
+            android:layout_toRightOf="@id/etiquetaEmail"
+            android:layout_marginLeft="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email@mail.com" />
+
+        <TextView
+            android:id="@+id/etiquetaDireccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etiquetaEmail"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Dirección"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/informacionDireccion"
+            android:layout_toRightOf="@id/etiquetaDireccion"
+            android:layout_below="@id/informacionEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Calle, numero ciudad"
+             />
+
+        <TextView
+            android:id="@+id/etiquetaTelefono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etiquetaDireccion"
+            android:layout_marginTop="10dp"
+            android:text="Teléfono"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/informacionTelefono"
+            android:layout_toRightOf="@id/etiquetaTelefono"
+            android:layout_below="@id/informacionDireccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="99999999999"
+            />
+
+
+        <TextView
+            android:id="@+id/etiquetaEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etiquetaTelefono"
+            android:layout_marginTop="10dp"
+            android:text="Empresa"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/informacionEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/informacionTelefono"
+            android:layout_marginLeft="13dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/etiquetaEmpresa"
+            android:text="Incorporation" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+
+
+    </RelativeLayout>
+</LinearLayout>
