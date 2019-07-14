@@ -14,7 +14,7 @@ public class User {
 
     private Address address;
 
-    private Geo geo;
+   // private Geo geo;
 
     private String phone;
 
@@ -22,13 +22,13 @@ public class User {
 
     private Company company;
 
-    public User(int id, String name, String username, String email, Address address, Geo geo, String phone, String website, Company company) {
+    public User(int id, String name, String username, String email, Address address, String phone, String website, Company company) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
         this.address = address;
-        this.geo = geo;
+        //this.geo = geo;
         this.phone = phone;
         this.website = website;
         this.company = company;
@@ -54,9 +54,9 @@ public class User {
         return address;
     }
 
-    public Geo getGeo() {
-        return geo;
-    }
+   // public Geo getGeo() {
+      //  return geo;
+    //}
 
     public String getPhone() {
         return phone;

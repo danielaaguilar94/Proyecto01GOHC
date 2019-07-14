@@ -3,7 +3,7 @@ package com.example.proyecto01gohc.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-class Geo {
+public class Geo {
 
     private String lat;
 
