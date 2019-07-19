@@ -8,12 +8,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -50,6 +52,7 @@ public class Usuarios extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         getUsuarios();
+       // listaUsu.setTextFilterEnabled(true);
     }
 
     @Override
@@ -61,6 +64,7 @@ public class Usuarios extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
+    //para el menú contexual pongo las siguientes opciones, ya sea usuarios, desarrollador o cerrar sesión
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.itemUsuarios:
@@ -69,9 +73,6 @@ public class Usuarios extends AppCompatActivity {
                 break;
             case R.id.itemCerrarSesion:
                 auth.getInstance().signOut();
-               /* FLAG_ACTIVITY_SINGLE_TOP para no lanzar un activity si ya se está ejecutando encima de la pila y FLAG_ACTIVITY_CLEAR_TOP, que tal y como indica la documentación:
-
-                If set, and the activity being launched is already running in the current task, then instead of launching a new instance of that activity, all of the other activities on top of it will be closed and this Intent will be delivered to the (now on top) old activity as a new Intent.*/
                 startActivity(new Intent(getBaseContext(), MainActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
                 finishAndRemoveTask();
@@ -92,7 +93,7 @@ public class Usuarios extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+// método para obtener a los usuarios de la api con retrofit y usando la interface declarada en la carpeta interface
     private void getUsuarios() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://jsonplaceholder.typicode.com/")
@@ -121,17 +122,38 @@ public class Usuarios extends AppCompatActivity {
                     nombreUsuarios[i] = listaUsuarios.get(i).getName();
                    idUsuarios[i] = listaUsuarios.get(i).getId();
                 }
-
-
-
                 adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, nombreUsuarios);
                 listaUsu.setAdapter(adapter);
+                adapter.setNotifyOnChange(true);
+                listaUsu.setTextFilterEnabled(true);
+                buscarUsuario.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        adapter.getFilter().filter(s.toLowerCase().toString());
+                        adapter.notifyDataSetChanged();
+
+                        return true;
+                    }
+                });
 
                listaUsu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(final AdapterView<?> adapterView, View view, int i, long l) {
+                        //
+                        /*Aquí mandaba a traer al idUsuarios[i] del for anterior para obtener los id's de los usuarios y lo almacenada a un int
+                        pero con lo del filtro lo cambié tomando en cuenta el id del item del adapterview, en la siguiente clase de posts no
+                        cambié, puesto que no me ha funcionado aquí, funcionando en esta clase, espero implementarla en la otra.*/
+                        //int idUsu = idUsuarios[i];
+                        int idUsu = (int) adapterView.getItemIdAtPosition(i+1);
+                        String name = adapterView.getItemAtPosition(i).toString();
+                        adapter.getItem(i);
 
-                        int idUsu = idUsuarios[i];
+                        Log.d("Nombre de usuario", ""+name);
                         Log.d("idUser", ""+idUsu);
                         Intent intent = new Intent(getApplicationContext(), PostsActivity.class);
                         Bundle miBundle = new Bundle();
@@ -148,7 +170,7 @@ public class Usuarios extends AppCompatActivity {
                     Log.d("idUser", "" + u.getId());
                     Log.d("Name", u.getName());
                 }
-                buscarUsuario.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+               /* buscarUsuario.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String s) {
                         adapter.getFilter().filter(s);
@@ -157,13 +179,12 @@ public class Usuarios extends AppCompatActivity {
 
 
                     public boolean onQueryTextChange(String s) {
-                        String text = s;
-                        adapter.getFilter().filter(text);;
+                        //String text = s;
+                        adapter.getFilter().filter(s);;
                         return false;
-                        //adapter.getFilter().filter(s);
-                        //return false;
+
                     }
-                });
+                });*/
             }
 
             @Override
