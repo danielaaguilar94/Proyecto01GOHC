@@ -53,14 +53,12 @@ public class Usuarios extends AppCompatActivity {
     SearchView buscarUsuario;
     ListView listaUsu;
     TextView txtUsuarios;
-    ArrayAdapter<String> adapter;
-    ArrayAdapter<Integer> adapterId;
+    //ArrayAdapter<String> adapter;
     FirebaseAuth auth;
     ProgressBar progreso;
     List<User> listaUsuarios;
     SimpleAdapter simpleAdapter;
-    //ArrayAdapter<HashMap<Integer,String>> adapter1;
-    //ArrayList<HashMap<Integer,String>> idsAndNames;
+
 
     //private final static String TAG = Usuarios.class.getSimpleName();
 
@@ -69,12 +67,10 @@ public class Usuarios extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuarios);
-///////////////
         txtUsuarios = findViewById(R.id.textUsuarios);
         buscarUsuario = findViewById(R.id.searchUsuarios);
         listaUsu = findViewById(R.id.listViewUsuarios);
         listaUsu.setTextFilterEnabled(true);
-        //listaUsu.setFilterText(.toString());
         progreso = findViewById(R.id.cargando);
         auth = FirebaseAuth.getInstance();
 
@@ -201,10 +197,6 @@ public class Usuarios extends AppCompatActivity {
                     }
                 });
 
-                /*progreso.setVisibility(View.GONE);
-                listaUsuarios = response.body();
-                listarUsuarios();
-                funcionalidadClicItems();*/
             }
 
             @Override
@@ -215,6 +207,7 @@ public class Usuarios extends AppCompatActivity {
         });
     }
 
+    ///////////método que recibe una lista del tipo User y almacena datos del objeto en un HashMap///////////
     private void mostrarInfoUser(List<User> listaUser) {
 
         if (listaUser!=null){
@@ -229,7 +222,7 @@ public class Usuarios extends AppCompatActivity {
                 listItemMap.put("name",  user.getName());
                 itemDataList.add(listItemMap);
             }
-            simpleAdapter = new SimpleAdapter(this, itemDataList, android.R.layout.simple_list_item_2,
+            simpleAdapter = new SimpleAdapter(this, itemDataList, android.R.layout.simple_list_item_1,
                     new String[]{"name", "id"}, new int[]{android.R.id.text1});
             listaUsu.setAdapter(simpleAdapter);
         }
@@ -238,44 +231,8 @@ public class Usuarios extends AppCompatActivity {
     //////////////Lista los nombres de los usuarios obtenidos de la respuesta de la API y se muestran en el listview/////////////
     private void listarUsuarios(){
         mostrarInfoUser(listaUsuarios);
-
-        final ArrayList<String> nomUsu = new ArrayList<String>(listaUsuarios.size());
-        final ArrayList<Integer> ids = new ArrayList<Integer>(listaUsuarios.size());
-
-
-        final String[] nombreUsuarios = new String[listaUsuarios.size()];
-        final int[] idUsuarios = new int[listaUsuarios.size()];
-
-      //idsAndNames = new ArrayList<>();
-        //final Map<ArrayList<Integer>, ArrayList<String>> idsnombres = new HashMap<ArrayList<Integer>, ArrayList<String>>(listaUsuarios.size());
-
-        for (int i = 0; i < listaUsuarios.size(); i++) {
-            nomUsu.add(listaUsuarios.get(i).getName());
-            ids.add(listaUsuarios.get(i).getId());
-            nombreUsuarios[i] = listaUsuarios.get(i).getName();
-            idUsuarios[i] = listaUsuarios.get(i).getId();
-           // HashMap<Integer,String> hashMap = new HashMap<>();
-            //hashMap.put(listaUsuarios.get(i).getId(), listaUsuarios.get(i).getName());
-            //idsAndNames.add(hashMap);
-
-        }
-        //ArrayAdapter<HashMap<Integer,String>> adapter1 =new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, idsAndNames);
-
-       /* adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, nomUsu);
-        //listaUsu.setAdapter(adapter1);
-        //adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, idsnombres);
-        adapterId = new ArrayAdapter<Integer>(getApplicationContext(),android.R.layout.simple_list_item_1,ids);
-        listaUsu.setAdapter(adapterId);
-        listaUsu.setAdapter(adapter);
-        adapter.setNotifyOnChange(true);
-        adapterId.setNotifyOnChange(true);
-        //adapter1.setNotifyOnChange(true);*/
-
-
         ////////////////////Para ver en consola////////////////////////////////
         for (User u : listaUsuarios) {
-            String usuario = "";
-            usuario += "name" + u.getName();
             Log.d("idUser", "" + u.getId());
             Log.d("Name", u.getName());
         }
@@ -308,22 +265,18 @@ public class Usuarios extends AppCompatActivity {
 
 
     }
-/////////////////////Pendiente-------> funcionalidad correcta del filtro y actualización de la nueva lista de usuarios en el buscador ///////////
+/////////////////////método para el searchview  filtrar los items///////////
     private void buscarUsuarios(){
         /////Función del searchview//////////////////////////////////////////////////
         buscarUsuario.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                if (TextUtils.isEmpty(s)) {
-                    listaUsu.clearTextFilter();
-                } else {
-                    listaUsu.setFilterText(s.toString());
-                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                simpleAdapter.getFilter().filter(s.toLowerCase().trim());
 
                 if (TextUtils.isEmpty(s)) {
                     listaUsu.clearTextFilter();
