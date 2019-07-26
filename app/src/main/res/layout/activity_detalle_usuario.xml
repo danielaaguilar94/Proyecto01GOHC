@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:layout_margin="40dp"
         android:gravity="center|center_horizontal"
-        android:text="TextView"
+        android:text=""
         android:textSize="20sp"
         tools:layout_conversion_absoluteHeight="24dp"
         tools:layout_conversion_absoluteWidth="312dp"
@@ -42,7 +42,7 @@
             android:layout_marginLeft="35dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="email@mail.com" />
+            android:text="" />
 
         <TextView
             android:id="@+id/etiquetaDireccion"
@@ -63,7 +63,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Calle, numero ciudad"
+            android:text=""
              />
 
         <TextView
@@ -84,7 +84,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:text="99999999999"
+            android:text=""
             />
 
 
@@ -105,7 +105,15 @@
             android:layout_marginLeft="13dp"
             android:layout_marginBottom="10dp"
             android:layout_toRightOf="@id/etiquetaEmpresa"
-            android:text="Incorporation" />
+            android:text="" />
+
+        <ProgressBar
+            android:id="@+id/cargandoDetalleUsuario"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
 
     </RelativeLayout>
 
@@ -126,4 +134,6 @@
 
 
     </RelativeLayout>
+
+
 </LinearLayout>

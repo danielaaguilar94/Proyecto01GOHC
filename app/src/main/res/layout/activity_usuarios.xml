@@ -37,8 +37,24 @@
         android:layout_below="@id/searchUsuarios"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ProgressBar
+
+            android:id="@+id/cargando"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
 
 
 </RelativeLayout>

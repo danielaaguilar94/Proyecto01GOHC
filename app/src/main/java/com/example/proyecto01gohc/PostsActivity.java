@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,9 @@ import android.widget.Toast;
 import com.example.proyecto01gohc.Interface.JsonPlaceHolderApi;
 import com.example.proyecto01gohc.Model.Post;
 import com.example.proyecto01gohc.Model.User;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -42,6 +45,7 @@ public class PostsActivity extends AppCompatActivity {
     ImageView imageViewInfoUsuario;
     ArrayAdapter<String> adapter;
     FirebaseAuth auth;
+    ProgressBar progreso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class PostsActivity extends AppCompatActivity {
         txtPosts=findViewById(R.id.textPosts);
         listaPosts=findViewById(R.id.listaViewPosts);
         imageViewInfoUsuario=findViewById(R.id.imageButtonInfoUsuario);
+        progreso = findViewById(R.id.cargandoPosts);
         auth = FirebaseAuth.getInstance();
 
         Bundle miBundle = this.getIntent().getExtras();
@@ -97,6 +102,9 @@ public class PostsActivity extends AppCompatActivity {
                 startActivity(intento);
                 break;
             case R.id.itemCerrarSesion:
+                FirebaseUser user = auth.getCurrentUser();
+                Toast.makeText(getApplicationContext(), "Has cerrado la sesión con: "+user.getEmail(), Toast.LENGTH_SHORT).show();
+                LoginManager.getInstance().logOut();
                 auth.getInstance().signOut();
                 startActivity(new Intent(getBaseContext(), MainActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
@@ -130,6 +138,7 @@ public class PostsActivity extends AppCompatActivity {
                 .build();
 
         JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        progreso.setVisibility(View.VISIBLE);
         Call<List<Post>> call = jsonPlaceHolderApi.getPosts(userId);
         call.enqueue(new Callback<List<Post>>() {
             @Override
@@ -141,6 +150,7 @@ public class PostsActivity extends AppCompatActivity {
                 }
 
                 final List<Post> listaDePosts = response.body();
+                progreso.setVisibility(View.GONE);
 
 
                 String[] titulosPosts = new String[listaDePosts.size()];
@@ -194,6 +204,7 @@ public class PostsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
+                progreso.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

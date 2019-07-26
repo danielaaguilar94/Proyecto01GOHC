@@ -17,7 +17,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:text="TextView"
+        android:text=""
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -29,7 +29,21 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="480dp"
-        android:text="TextView"
+        android:text=""
         android:textSize="18sp"
         android:textStyle="italic" />
+
+
+    <ProgressBar
+
+        android:id="@+id/cargandoContenidoPost"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp" />
+
+
+
 </LinearLayout>

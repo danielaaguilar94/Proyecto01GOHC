@@ -16,13 +16,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.proyecto01gohc.Interface.JsonPlaceHolderApi;
 import com.example.proyecto01gohc.Model.Post;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -36,6 +39,7 @@ public class ContenidoPost extends AppCompatActivity {
 
     TextView tvTitle, tvBody;
     FirebaseAuth auth;
+    ProgressBar progreso;
 
 
     @Override
@@ -45,7 +49,9 @@ public class ContenidoPost extends AppCompatActivity {
 
         tvTitle = findViewById(R.id.textoTitle);
         tvBody = findViewById(R.id.textoBody);
+        progreso = findViewById(R.id.cargandoContenidoPost);
         auth = FirebaseAuth.getInstance();
+
         Bundle miBundle = this.getIntent().getExtras();
 
 
@@ -70,6 +76,9 @@ public class ContenidoPost extends AppCompatActivity {
                 startActivity(intento);
                 break;
             case R.id.itemCerrarSesion:
+                FirebaseUser user = auth.getCurrentUser();
+                Toast.makeText(getApplicationContext(), "Has cerrado la sesión con: "+user.getEmail(), Toast.LENGTH_SHORT).show();
+                LoginManager.getInstance().logOut();
                 auth.getInstance().signOut();
                 startActivity(new Intent(getBaseContext(), MainActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
@@ -100,6 +109,7 @@ public class ContenidoPost extends AppCompatActivity {
                 .build();
 
         JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        progreso.setVisibility(View.VISIBLE);
         Call<Post> call = jsonPlaceHolderApi.getContPost(id);
         call.enqueue(new Callback <Post>() {
             @Override
@@ -110,6 +120,7 @@ public class ContenidoPost extends AppCompatActivity {
                     return;
                 }
                 final Post post = response.body();
+                progreso.setVisibility(View.GONE);
 
                 String title = post.getTitle();
                 String body = post.getBody();
@@ -127,6 +138,7 @@ public class ContenidoPost extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Post> call, Throwable t) {
+                progreso.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

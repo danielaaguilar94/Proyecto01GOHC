@@ -2,4 +2,7 @@
     <string name="app_name">Proyecto01GOHC</string>
     <string name="etiqueta_usuarios">Usuarios</string>
     <string name="etiqueta_posts">Posts</string>
+    <string name="facebook_app_id">2219678788342645</string>
+    <string name="fb_login_protocol_scheme">fb2219678788342645</string>
+
 </resources>

@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ import com.example.proyecto01gohc.Model.Company;
 import com.example.proyecto01gohc.Model.Geo;
 import com.example.proyecto01gohc.Model.Post;
 import com.example.proyecto01gohc.Model.User;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,6 +33,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,6 +51,7 @@ public class DetalleUsuario extends AppCompatActivity   {
     String calle;
     String codPostal;
     SupportMapFragment mapFragment;
+    ProgressBar progreso;
 
 
     @Override
@@ -59,6 +64,7 @@ public class DetalleUsuario extends AppCompatActivity   {
         tvDireccion=findViewById(R.id.informacionDireccion);
         tvTelefono=findViewById(R.id.informacionTelefono);
         tvEmpresa=findViewById(R.id.informacionEmpresa);
+        progreso=findViewById(R.id.cargandoDetalleUsuario);
         auth = FirebaseAuth.getInstance();
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
@@ -87,6 +93,9 @@ public class DetalleUsuario extends AppCompatActivity   {
                 startActivity(intento);
                 break;
             case R.id.itemCerrarSesion:
+                FirebaseUser user = auth.getCurrentUser();
+                Toast.makeText(getApplicationContext(), "Has cerrado la sesión con: "+user.getEmail(), Toast.LENGTH_SHORT).show();
+                LoginManager.getInstance().logOut();
                 auth.getInstance().signOut();
                 startActivity(new Intent(getBaseContext(), MainActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
@@ -117,6 +126,7 @@ public class DetalleUsuario extends AppCompatActivity   {
                 .build();
 
         JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        progreso.setVisibility(View.VISIBLE);
         Call<User> call = jsonPlaceHolderApi.getDetallesUsuario(id);
         call.enqueue(new Callback<User>() {
             @Override
@@ -127,6 +137,7 @@ public class DetalleUsuario extends AppCompatActivity   {
                     return;
                 }
                 final User user = response.body();
+                progreso.setVisibility(View.GONE);
 
                 String nombre = user.getName();
                 String email = user.getEmail();
@@ -163,6 +174,7 @@ public class DetalleUsuario extends AppCompatActivity   {
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
                     @Override
                     public void onMapReady(GoogleMap googleMap) {
+                        progreso.setVisibility(View.VISIBLE);
                         map = googleMap;
                         String cp = "Código Postal: "+codPostal;
                         String st = "Calle: "+calle;
@@ -173,6 +185,8 @@ public class DetalleUsuario extends AppCompatActivity   {
                         map.addMarker(new MarkerOptions().position(posicion).title(st).snippet(cp));
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 2));
                         map.getUiSettings().setZoomControlsEnabled(true);
+                        progreso.setVisibility(View.GONE);
+
 
                     }
                 });
@@ -181,6 +195,7 @@ public class DetalleUsuario extends AppCompatActivity   {
             }
             @Override
             public void onFailure(Call<User> call, Throwable t) {
+                progreso.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

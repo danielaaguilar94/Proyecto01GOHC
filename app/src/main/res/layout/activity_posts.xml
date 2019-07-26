@@ -48,8 +48,23 @@
         android:layout_below="@id/searchPosts"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ProgressBar
+
+            android:id="@+id/cargandoPosts"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+    </LinearLayout>
 
 
 </RelativeLayout>
